@@ -33,50 +33,7 @@ const Home = (props) => {
     const [title, setTitle] = useState('News');
     const [viewType, setView] = useState(1);
 
-    const SingleFilter = () => {
-        return <View style={{ marginHorizontal: 20 }}>
-            <View>
-                <Text style={styles.text_hint}>Location</Text>
-                <TextInput
-                    returnKeyType="done"
-                    style={styles.input}
-                    onChangeText={setLocation}
-                    value={location}
-                    placeholder="Enter location"
-                    placeholderTextColor={Colors.placeholder_gray}
-                />
-
-            </View>
-            <TouchableNativeFeedback onPress={() => fireApi()}>
-                <View style={styles.register}>
-
-                    <Text style={styles.text_login}>{`Submit`}</Text>
-                </View>
-            </TouchableNativeFeedback>
-        </View>
-    }
-    const SingleFilterType = () => {
-        return <View style={{ marginHorizontal: 20 }}>
-            <View>
-            <Text style={styles.text_hint}>Type</Text>
-                <TextInput
-                    returnKeyType="next"
-                    style={styles.input}
-                    onChangeText={setType}
-                    value={type}
-                    placeholder="Enter key type"
-                    placeholderTextColor={Colors.placeholder_gray}
-                />
-
-            </View>
-            <TouchableNativeFeedback onPress={() => fireApi()}>
-                <View style={styles.register}>
-
-                    <Text style={styles.text_login}>{`Submit`}</Text>
-                </View>
-            </TouchableNativeFeedback>
-        </View>
-    }
+    
     const fireApi = () => {
         if (index == 3) {
             if (!type) {
@@ -108,40 +65,6 @@ const Home = (props) => {
             _getEvents();
         }
 
-
-    }
-    const TwoFilter = () => {
-        return <View style={{ marginHorizontal: 20 }}>
-
-            <View>
-                <Text style={styles.text_hint}>Type</Text>
-                <TextInput
-                    returnKeyType="next"
-                    style={styles.input}
-                    onChangeText={setType}
-                    value={type}
-                    placeholder="Enter key type"
-                    placeholderTextColor={Colors.placeholder_gray}
-                    keyboardType="email-address"
-                />
-                <Text style={styles.text_hint}>Location</Text>
-                <TextInput
-                    returnKeyType="done"
-                    style={styles.input}
-                    onChangeText={setLocation}
-                    value={location}
-                    placeholder="Enter location"
-                    placeholderTextColor={Colors.placeholder_gray}
-                />
-
-            </View>
-            <TouchableNativeFeedback onPress={() => fireEventApi()}>
-                <View style={styles.register}>
-
-                    <Text style={styles.text_login}>{`Submit`}</Text>
-                </View>
-            </TouchableNativeFeedback>
-        </View>
 
     }
     const Row = (prop) => (
@@ -357,7 +280,7 @@ const Home = (props) => {
         );
     }
     const RenderDataLoading = () => {
-        return <View style={{flex:1, justifyContent:'center'}}>
+        return <View style={{ flex: 1, justifyContent: 'center' }}>
             <Text style={styles.text_register}>{'Looking for Data...'}</Text>
 
             <ActivityIndicator />
@@ -372,13 +295,13 @@ const Home = (props) => {
                     <Text style={[styles.text_register, { marginLeft: 5, fontSize: 20, marginBottom: 5, fontWeight: 'bold' }]}>{title}</Text>
 
                 </View>
-               
-               {index!=1? <Pressable
+
+                {index != 1 ? <Pressable
                     style={{ height: 30, width: 50, justifyContent: 'center', alignItems: 'flex-end' }}
 
                     onPress={() => setView(1)}>
                     <Image resizeMode={'contain'} style={{ height: 20, width: 20, tintColor: Colors.status_bar }} source={ImagesIcons.filter} />
-                </Pressable> :<></>}
+                </Pressable> : <></>}
 
                 <Pressable
                     style={{ height: 30, width: 50, justifyContent: 'center', alignItems: 'flex-end' }}
@@ -389,7 +312,7 @@ const Home = (props) => {
             </View>
 
 
-            <View style={{ flex: 1,  }}>
+            <View style={{ flex: 1, }}>
 
 
                 {index == 1 ?
@@ -399,7 +322,38 @@ const Home = (props) => {
                         style={styles.flatlist}
                         renderItem={({ item }) => <Row item={item} />}
                     /> : <RenderDataLoading /> : index == 2 ?
-                        viewType == 1 ? <TwoFilter /> :
+                        viewType == 1 ?
+                            <View style={{ marginHorizontal: 20 }}>
+
+                                <View>
+                                    <Text style={styles.text_hint}>Type</Text>
+                                    <TextInput
+                                        returnKeyType="next"
+                                        style={styles.input}
+                                        onChangeText={setType}
+                                        value={type}
+                                        placeholder="Enter key type"
+                                        placeholderTextColor={Colors.placeholder_gray}
+                                    />
+                                    <Text style={styles.text_hint}>Location</Text>
+                                    <TextInput
+                                        returnKeyType="done"
+                                        style={styles.input}
+                                        onChangeText={setLocation}
+                                        value={location}
+                                        placeholder="Enter location"
+                                        placeholderTextColor={Colors.placeholder_gray}
+                                    />
+
+                                </View>
+                                <TouchableNativeFeedback onPress={() => fireEventApi()}>
+                                    <View style={styles.register}>
+
+                                        <Text style={styles.text_login}>{`Submit`}</Text>
+                                    </View>
+                                </TouchableNativeFeedback>
+                            </View>
+                            :
                             events.length > 0 ? <FlatList
                                 showsVerticalScrollIndicator={false}
                                 data={events}
@@ -407,7 +361,28 @@ const Home = (props) => {
                                 renderItem={({ item }) => <RowEvents item={item} />}
                             /> : <RenderDataLoading /> : index == 3 ?
 
-                            viewType == 1 ? <SingleFilterType /> :
+                            viewType == 1 ?
+                                <View style={{ marginHorizontal: 20 }}>
+                                    <View>
+                                        <Text style={styles.text_hint}>Type</Text>
+                                        <TextInput
+                                            returnKeyType="next"
+                                            style={styles.input}
+                                            onChangeText={setType}
+                                            value={type}
+                                            placeholder="Enter key type"
+                                            placeholderTextColor={Colors.placeholder_gray}
+                                        />
+
+                                    </View>
+                                    <TouchableNativeFeedback onPress={() => fireApi()}>
+                                        <View style={styles.register}>
+
+                                            <Text style={styles.text_login}>{`Submit`}</Text>
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </View>
+                                :
                                 videos.length > 0 ? <FlatList
                                     showsVerticalScrollIndicator={false}
                                     data={videos}
@@ -416,8 +391,31 @@ const Home = (props) => {
 
                                 /> : <RenderDataLoading /> : index == 4 ?
                                 <View style={{ flex: 1 }}>
-                                    {viewType == 1 ? <SingleFilter /> :
-                                     weather.length > 0 ? <RenderWeather />:  <RenderDataLoading />}
+                                    {viewType == 1 ?
+
+                                        <View style={{ marginHorizontal: 20 }}>
+                                            <View>
+                                                <Text style={styles.text_hint}>Location</Text>
+                                                <TextInput
+                                                    returnKeyType="done"
+                                                    style={styles.input}
+                                                    onChangeText={setLocation}
+                                                    value={location}
+                                                    placeholder="Enter location"
+                                                    placeholderTextColor={Colors.placeholder_gray}
+                                                />
+
+                                            </View>
+                                            <TouchableNativeFeedback onPress={() => fireApi()}>
+                                                <View style={styles.register}>
+
+                                                    <Text style={styles.text_login}>{`Submit`}</Text>
+                                                </View>
+                                            </TouchableNativeFeedback>
+                                        </View>
+
+                                        :
+                                        weather.length > 0 ? <RenderWeather /> : <RenderDataLoading />}
                                 </View> : <></>
                 }
             </View>
