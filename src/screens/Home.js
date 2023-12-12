@@ -4,6 +4,7 @@ import {
     FlatList,
     Image,
     Linking,
+    PermissionsAndroid,
     Pressable,
     StyleSheet,
     Text,
@@ -19,6 +20,7 @@ import { Fonts } from '../common/Fonts';
 import { getEvents, getNews, getVideos, getWaetherDetails } from '../axios/ServerCall';
 import { CommonActions } from '@react-navigation/native';
 import { removeUserToken, showToast } from '../common/LocalStorage';
+import Geolocation from '@react-native-community/geolocation';
 
 
 const Home = (props) => {
@@ -32,8 +34,14 @@ const Home = (props) => {
     const [location, setLocation] = useState('USA');
     const [title, setTitle] = useState('News');
     const [viewType, setView] = useState(1);
+    const [latitude, setLatitude] = useState();
+    const [longitude, setLongitude] = useState(null);
 
-    
+    const setLatLngs = (info) => {
+        console.log(info)
+        setLatitude(info?.coords?.latitude)
+        setLongitude(info?.coords?.longitude)
+    }
     const fireApi = () => {
         if (index == 3) {
             if (!type) {
@@ -67,9 +75,9 @@ const Home = (props) => {
 
 
     }
-    const Row = (prop) => (
-
-        <Pressable style={styles.item_section}
+    const Row = (prop) => {
+        const [defaultImage, setDefaultImage] = useState(false);
+       return <Pressable style={styles.item_section}
             onPress={() =>
                 props?.navigation?.navigate('Details', {
                     title: prop?.item?.title,
@@ -80,7 +88,9 @@ const Home = (props) => {
         >
             <View style={styles.item_internal}>
                 <Image
-                    style={styles.image_row} source={{ uri: 'https://img.freepik.com/premium-vector/speech-bubble-with-latest-news-text-speech-bubble-with-loudspeaker-pop-art-style-vector-line-icon-business-advertising_748571-643.jpg' }} />
+                    onError={() => setDefaultImage(true)}
+                    style={styles.image_row}
+                    source={{ uri: !defaultImage ? prop?.item?.image : 'https://img.freepik.com/premium-vector/speech-bubble-with-latest-news-text-speech-bubble-with-loudspeaker-pop-art-style-vector-line-icon-business-advertising_748571-643.jpg' }} />
 
                 <View style={{ flex: 1 }} >
                     <Text numberOfLines={2} style={[styles.name, { fontWeight: "bold" }]}>{prop?.item?.title}</Text>
@@ -94,7 +104,7 @@ const Home = (props) => {
 
             <Text style={{ backgroundColor: Colors.light_gray_back, height: 2, marginTop: 0 }} />
         </Pressable>
-    );
+    }
     const RowEvents = (prop) => (
 
         <Pressable style={styles.item_section}
@@ -212,37 +222,77 @@ const Home = (props) => {
         setEvents([]);
         setVideos([]);
         setWeather([]);
+        setType('');
+        setLocation('');
         setView(1)
     }
-    // getting Data From sever
+    
     useEffect(() => {
+        const requestLocationPermission = async () => {
+          if (Platform.OS === 'ios') {
+            Geolocation.getCurrentPosition(info => setLatLngs(info));
+            
+          } else {
+            try {
+              const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                  title: 'Location Access Required',
+                  message: 'This App needs to Access your location',
+                },
+              );
+              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                //showToast('Permission Granted')
+
+                Geolocation.getCurrentPosition(info => setLatLngs(info));
+              } else {
+              // showToast('Permission Denied')
+               Geolocation.getCurrentPosition(info => setLatLngs(info));
+
+              }
+            } catch (err) {
+              console.warn(err);
+            }
+          }
+        };
+        requestLocationPermission();
+       
+       
+      }, []);
+
+    // getting Data From sever
+
+
+    useEffect(() => {
+
         switch (index) {
             case 1:
                 setTitle('News')
-                _getNews();
+                if (longitude) {
+                    _getNews();
+                }
+
                 break;
             case 2:
                 setTitle('Events')
-                _getEvents();
                 break;
             case 3:
                 setTitle('Videos')
-
                 break;
             case 4:
                 setTitle('Weather')
-
                 break;
         }
-    }, [index])
+    }, [longitude, index])
+
     // Getting news
     const _getNews = async () => {
-        const response = await getNews();
-        if (response) {
 
+        const data = '?max-sentiment=10&location-filter=' + latitude + ',' + longitude + ',100&sort=publish-time&sort-direction=desc'
+        const response = await getNews(data);
+        if (response) {
             setNews(response?.data?.data)
         }
-
     }
     // Getting Events
     const _getEvents = async () => {
@@ -663,7 +713,6 @@ const styles = StyleSheet.create({
     },
 
     text_register: {
-        marginTop: 15,
         fontFamily: 'DMSans-Bold',
         fontSize: 15,
         textAlign: 'center',

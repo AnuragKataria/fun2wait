@@ -43,10 +43,9 @@ export const registeration = async (payload) => {
     return response
 };
 // GET NEWS
-export const getNews = async () => {
+export const getNews = async (data) => {
     const token = await getUserToken();
-    console.log(ApiInterface.get_news , token)
-    const response = await axios.get(ApiInterface.get_news, {
+    const response = await axios.get(ApiInterface.get_news+data, {
         headers: {
             'Authorization': 'Bearer ' + token
             

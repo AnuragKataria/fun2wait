@@ -15,6 +15,7 @@ import { ImagesIcons } from '../common/ImagesIcons';
 import { login, registeration } from '../axios/ServerCall';
 import { jwtDecode } from "jwt-decode";
 import { setLoginObject, setUserToken, showToast } from '../common/LocalStorage';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const Register = (props) => {
@@ -73,78 +74,84 @@ const Register = (props) => {
     return (
         <View style={styles.container}>
 
-            <View style={{ height: 150, justifyContent: 'center' }} >
-                <Image resizeMode={'contain'} style={styles.img} source={ImagesIcons._logo} />
-                <Logo style={{ alignSelf: 'center' }} />
 
-            </View>
+
             <View style={{ flex: 1, }}>
-                <Text style={styles.text}>Register</Text>
-
-                <View style={styles.view_inputs}>
-
-                    <>
-                        <Text style={styles.text_hint}>First name</Text>
-
-
-                        <TextInput
-                            returnKeyType="next"
-                            style={styles.input}
-                            onChangeText={onChangeFirstname}
-                            value={firstName}
-                            placeholder="Enter your First name"
-                            placeholderTextColor={Colors.placeholder_gray}
-                        />
-                    </>
-
-                    <>
-                        <Text style={styles.text_hint}>Last name</Text>
-
-
-                        <TextInput
-                            returnKeyType="next"
-                            style={styles.input}
-                            onChangeText={onChangeLastname}
-                            value={lastName}
-                            placeholder="Enter your Last name"
-                            placeholderTextColor={Colors.placeholder_gray}
-                        />
-
-                    </>
-
-                    <>
-                        <Text style={styles.text_hint}>Email</Text>
-
-
-                        <TextInput
-                            returnKeyType="next"
-                            style={styles.input}
-                            onChangeText={onChangeEmail}
-                            value={email}
-                            placeholder="Enter your Email ID"
-                            placeholderTextColor={Colors.placeholder_gray}
-                            keyboardType="email-address"
-                        />
-                    </>
-                    <>
-
-                        <Text style={styles.text_hint}>Password</Text>
-
-
-                        <TextInput
-                            returnKeyType="done"
-                            style={styles.input}
-                            onChangeText={onChangePassword}
-                            value={password}
-                            placeholder="Enter your Password"
-                            placeholderTextColor={Colors.placeholder_gray}
-                            secureTextEntry={true}
-                        />
-                    </>
+                <View style={{ height: 150, justifyContent: 'center' }} >
+                    <Image resizeMode={'contain'} style={styles.img} source={ImagesIcons._logo} />
+                    <Logo style={{ alignSelf: 'center' }} />
 
                 </View>
 
+                <Text style={styles.text}>Register</Text>
 
+                <ScrollView >
+                    <View style={styles.view_inputs}>
+
+                        <>
+                            <Text style={styles.text_hint}>First name</Text>
+
+
+                            <TextInput
+                                returnKeyType="next"
+                                style={styles.input}
+                                onChangeText={onChangeFirstname}
+                                value={firstName}
+                                placeholder="Enter your First name"
+                                placeholderTextColor={Colors.placeholder_gray}
+                            />
+                        </>
+
+                        <>
+                            <Text style={styles.text_hint}>Last name</Text>
+
+
+                            <TextInput
+                                returnKeyType="next"
+                                style={styles.input}
+                                onChangeText={onChangeLastname}
+                                value={lastName}
+                                placeholder="Enter your Last name"
+                                placeholderTextColor={Colors.placeholder_gray}
+                            />
+
+                        </>
+
+                        <>
+                            <Text style={styles.text_hint}>Email</Text>
+
+
+                            <TextInput
+                                returnKeyType="next"
+                                style={styles.input}
+                                onChangeText={onChangeEmail}
+                                value={email}
+                                placeholder="Enter your Email ID"
+                                placeholderTextColor={Colors.placeholder_gray}
+                                keyboardType="email-address"
+                            />
+                        </>
+                        <>
+
+                            <Text style={styles.text_hint}>Password</Text>
+
+
+                            <TextInput
+                                returnKeyType="done"
+                                style={styles.input}
+                                onChangeText={onChangePassword}
+                                value={password}
+                                placeholder="Enter your Password"
+                                placeholderTextColor={Colors.placeholder_gray}
+                                secureTextEntry={true}
+                            />
+                        </>
+
+                    </View>
+
+                </ScrollView>
+
+                <View style={{marginBottom:30,}}>
                 <TouchableNativeFeedback onPress={() => _register()}>
                     <View style={styles.register}>
 
@@ -161,7 +168,7 @@ const Register = (props) => {
                         <Text style={styles.text_login}>{`Already have an account? Login`}</Text>
                     </View>
                 </TouchableNativeFeedback>
-
+                </View>
             </View>
         </View>
 
@@ -177,7 +184,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
     },
     text: {
-        fontFamily: 'DMSans-Bold',
         fontSize: 20,
         marginTop: 20,
         marginBottom: 10,
@@ -188,6 +194,7 @@ const styles = StyleSheet.create({
 
     img: {
         height: 80,
+        tintColor:Colors.status_bar,
         width: 80,
         alignSelf: 'center'
     },
@@ -229,7 +236,6 @@ const styles = StyleSheet.create({
         height: 50,
         alignSelf: 'center',
         justifyContent: 'center',
-        marginTop: 50,
         backgroundColor: Colors.status_bar,
         alignSelf: 'center',
     },
