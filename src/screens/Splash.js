@@ -6,33 +6,37 @@ import {
 } from 'react-native';
 
 import { Colors } from '../common/Colors';
-import { Logo } from '../common/Logo';
 import { ImagesIcons } from '../common/ImagesIcons';
-import { getUserToken } from '../common/LocalStorage';
+import { getLoginObject, getUserToken } from '../common/LocalStorage';
+import { Logo } from '../common/Logo';
 
 
 const Splash = (props) => {
 
     const moveToOnBoard = async () => {
-    const token = await getUserToken();
-    console.log(token)
-    if(token != 'false'){
-        props?.navigation.replace('Home')
-    }else{
         props?.navigation.replace('Login')
     }
 
-        
+    const moveToHome = () => {
+        props?.navigation.replace('Home')
     }
+
     useEffect(() => {
-        setTimeout(function () {
-           moveToOnBoard();
+        setTimeout(async () => {
+            const user = await getLoginObject();
+            console.log('USER', JSON.parse(user))
+            if (user) {
+                moveToHome();
+            } else {
+                moveToOnBoard();
+            }
         }, 2000);
     }, []);
 
     return (
         <View style={styles.container}>
-             <Image resizeMode={'contain'} style={styles.img} source={ImagesIcons._logo}/>
+            <Logo style={{ alignSelf: 'center' }} />
+
         </View>
     );
 }
@@ -45,10 +49,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Colors.white,
     },
-img: {
-    tintColor:Colors.status_bar,
-       height:80,
-       width:80
+    img: {
+        tintColor: Colors.status_bar,
+        height: 80,
+        width: 80
     },
 
 });

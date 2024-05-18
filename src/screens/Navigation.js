@@ -6,6 +6,8 @@ import Login from './Login';
 import Register from './Register';
 import Home from './Home';
 import Details from './Details';
+import CreateAlarm from './ui/CreateAlarm';
+import MusicUpload from './ui/MusicUpload';
 
 
 
@@ -29,6 +31,17 @@ const Navigation = () => {
                     name="Splash"
                     component={Splash}
                     options={() => options} />
+
+                <Stack.Screen
+                    name="CreateAlarm"
+                    component={CreateAlarm}
+                    options={() => options} />
+
+                <Stack.Screen
+                    name="MusicUplaod"
+                    component={MusicUpload}
+                    options={() => options} />
+
 
                 <Stack.Screen
                     name="Login"

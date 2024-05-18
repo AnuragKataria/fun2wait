@@ -14,16 +14,21 @@ import { Logo } from '../common/Logo';
 import { ImagesIcons } from '../common/ImagesIcons';
 import { fetchCountryList, getNewsStocks, login } from '../axios/ServerCall';
 import { jwtDecode } from "jwt-decode";
-import { setUserToken, showToast } from '../common/LocalStorage';
+import { setLoginObject, setUserToken, showToast } from '../common/LocalStorage';
+import auth, {FirebaseAuthTypes, firebase} from '@react-native-firebase/auth';
 
 
 const Login = (props) => {
+    // const [email, onChangeEmail] = useState('testschool@gmail.com');
+    // const [password, onChangePassword] = useState('Abc@1234');
+
     const [email, onChangeEmail] = useState();
     const [password, onChangePassword] = useState();
     const [loading, setLoading] = useState(false);
 
     // Start Login Process
     const _login = async () => {
+        
         if (!email) {
             showToast('Please enter email');
         } else if (!password) {
@@ -32,31 +37,30 @@ const Login = (props) => {
             showToast('password lenght should be 6');
         } else {
             if (!loading) {
-                const payload_login = {
-                    userName: email,
-                    password: password,
-                }
                 setLoading(true);
-                // start Login after successful Registeration
-                const responseLogin = await login(payload_login);
-                if (responseLogin) {
-                    const token = responseLogin?.data?.data?.token;
-                    console.log(token)
-                    setUserToken(token)
-                    props?.navigation?.navigate('Home')
+
+                await 
+                firebase.auth()
+                .signInWithEmailAndPassword(email, password)
+                .then(function(user) {
+                setLoginObject(JSON.stringify(user))
+                  console.log('Heloooooo' , user);
+                  setLoading(false);
+                props?.navigation?.navigate('Home')
+
+                })
+                .catch(function(err){
+                    console.log('Heloooooo' , err);
                     setLoading(false);
 
-                    //     const decoded = jwtDecode(token+'');
-                    //     console.log('TORKRNR' , JSON.stringify(decoded))
-                    //    setLoginObject(decoded)
-                }
+                });
             } else {
                 setLoading(false);
 
                 console.log('Already Running')
             }
 
-        }
+       }
 
     }
 
@@ -64,7 +68,7 @@ const Login = (props) => {
         <View style={styles.container}>
 
             <View style={{ height: 150, justifyContent: 'center' }} >
-                <Image resizeMode={'contain'} style={styles.img} source={ImagesIcons._logo} />
+                {/* <Image resizeMode={'contain'} style={styles.img} source={ImagesIcons._logo} /> */}
                 <Logo style={{ alignSelf: 'center' }} />
 
             </View>
@@ -112,11 +116,11 @@ const Login = (props) => {
                 </TouchableNativeFeedback>
 
 
-                <TouchableNativeFeedback onPress={() => props?.navigation.replace('Register')}>
+                {/* <TouchableNativeFeedback onPress={() => props?.navigation.replace('Register')}>
                     <View >
                         <Text style={styles.text_register}>{`Don't have an account? Register`}</Text>
                     </View>
-                </TouchableNativeFeedback>
+                </TouchableNativeFeedback> */}
 
 
             </View>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "645946999652",
+    "firebase_url": "https://school-79cac-default-rtdb.firebaseio.com",
+    "project_id": "school-79cac",
+    "storage_bucket": "school-79cac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645946999652:android:37b55715f9c43bb8b4f071",
+        "android_client_info": {
+          "package_name": "com.quickfix.school_display"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645946999652-9d4ejr9pjsja3815r00a4fkjed57fk7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGV-kJdEYdCdFMaUsrP4zCcINtXSybi-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645946999652-9d4ejr9pjsja3815r00a4fkjed57fk7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
